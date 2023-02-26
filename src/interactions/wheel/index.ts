@@ -1,5 +1,7 @@
 import { $, QwikWheelEvent } from "@builder.io/qwik";
 import { MapStore } from "../../store/map";
+import { getMousePosition } from "../../dom/mouse";
+import { SphericalMercator } from "../../geo";
 
 export const lastCalls = {
   lastZoomIn: 0,
@@ -40,16 +42,51 @@ export function shouldZoomOut(
   return isAllowed && isDebounced;
 }
 
+export function getOffset(
+  event: QwikWheelEvent<HTMLDivElement>,
+  store: MapStore,
+) {
+  const worldSurfaceAtZoomLevel =
+    Math.pow(2, store.zoom) * store.tileProvider.tileSize;
+
+  const mousePosition = getMousePosition(event);
+
+  const mouseWorldPosition = {
+    x: mousePosition.x + store.pixelOrigin.x,
+    y: mousePosition.y + store.pixelOrigin.y,
+  };
+
+  const mouseGeoCoordinate = SphericalMercator.unproject(
+    mouseWorldPosition,
+    worldSurfaceAtZoomLevel,
+  );
+
+  return {
+    lat: mouseGeoCoordinate.lat - store.lat,
+    lng: mouseGeoCoordinate.lng - store.lng,
+  }
+}
+
 export const onWheel = $(
   (event: QwikWheelEvent<HTMLDivElement>, store: MapStore) => {
     if (shouldZoomIn(event, store)) {
+      const offset = getOffset(event, store);
+
       store.zoom = store.zoom + 1;
+      store.lat = store.lat + offset.lat;
+      store.lng = store.lng + offset.lng;
+
       lastCalls.lastZoomIn = Date.now();
       return;
     }
 
     if (shouldZoomOut(event, store)) {
+      const offset = getOffset(event, store);
+
       store.zoom = store.zoom - 1;
+      store.lat = store.lat - offset.lat;
+      store.lng = store.lng - offset.lng;
+
       lastCalls.lastZoomOut = Date.now();
       return;
     }

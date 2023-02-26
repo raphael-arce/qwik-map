@@ -8,6 +8,7 @@ export const SphericalMercator = {
   },
 
   /**
+   *  Converts a geo-coordinate into a point
    *
    *                   longitude
    * x = worldSize * (----------- + 0.5)
@@ -31,7 +32,10 @@ export const SphericalMercator = {
     };
   },
 
+
   /**
+   * Converts a point into a geo-coordinate at given world surface
+   *
    *                     x
    * longitude = ((-------------) - 0,5) * 360
    *                 worldSize

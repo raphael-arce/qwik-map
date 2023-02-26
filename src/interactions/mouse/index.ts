@@ -1,6 +1,7 @@
 import { QwikMouseEvent } from "@builder.io/qwik";
 import { MapStore } from "../../store/map";
 import { SphericalMercator } from "../../geo";
+import { getMousePosition } from "../../dom/mouse";
 
 export function onMouseDown(
   event: QwikMouseEvent<HTMLDivElement>,
@@ -10,12 +11,7 @@ export function onMouseDown(
     return;
   }
 
-  const target = event.target;
-
-  const rect = (target as Element).getBoundingClientRect();
-
-  const x = Math.round(event.clientX - rect.left);
-  const y = Math.round(event.clientY - rect.top);
+  const { x, y } = getMousePosition(event);
 
   store.interaction.isPanning = true;
   store.interaction.panBegin = { x, y };
@@ -54,12 +50,7 @@ export function onMouseMove(
     return;
   }
 
-  const target = event.target;
-
-  const rect = (target as Element).getBoundingClientRect();
-
-  const x = Math.round(event.clientX - rect.left);
-  const y = Math.round(event.clientY - rect.top);
+  const { x, y } = getMousePosition(event);
 
   const diffX = store.interaction.panBegin!.x - x;
   const diffY = store.interaction.panBegin!.y - y;

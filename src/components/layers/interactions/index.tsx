@@ -29,17 +29,18 @@ export const InteractionsLayer = component$(() => {
     onMouseUp(event, store),
   );
 
-  const onMouseMoveHandler = $((event: QwikMouseEvent<HTMLDivElement>) =>
-    onMouseMove(event, store),
-  );
+  const onMouseMoveHandler = $((event: QwikMouseEvent<HTMLDivElement>) => {
+    onMouseMove(event, store);
+  });
 
   return (
     <div
       onWheel$={onWheelHandler}
       onMouseDown$={onMouseDownHandler}
-      onMouseUp$={onMouseUpHandler}
-      onMouseMove$={onMouseMoveHandler}
-      style="position: 'absolute'"
+      document:onMouseUp$={onMouseUpHandler}
+      // onMouseMove$={onMouseMoveHandler}
+      document:onMouseMove$={onMouseMoveHandler}
+      style="position: 'absolute'; z-index: 100"
     >
       <Slot />
     </div>
