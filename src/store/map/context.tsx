@@ -1,4 +1,4 @@
-import { createContextId } from "@builder.io/qwik";
-import { MapStore } from "./";
+import { createContextId } from '@builder.io/qwik';
+import { MapStore } from './';
 
-export const QwikMapContext = createContextId<MapStore>("qwik-map-ctx");
+export const QwikMapContext = createContextId<MapStore>('qwik-map-ctx');

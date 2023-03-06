@@ -1,12 +1,7 @@
-import {
-  component$,
-  useBrowserVisibleTask$,
-  useContext,
-  useSignal
-} from "@builder.io/qwik";
-import { QwikMapContext, MapStore } from "../../../store/map";
-import { addSizeObserver } from "./services/observer";
-import { getTiles } from "./services/tile";
+import { component$, useBrowserVisibleTask$, useContext, useSignal } from '@builder.io/qwik';
+import { QwikMapContext, MapStore } from '../../../store/map';
+import { addSizeObserver } from './services/observer';
+import { getTiles } from './services/tile';
 
 export const TilesLayer = component$(() => {
   const store: MapStore = useContext(QwikMapContext);
@@ -34,8 +29,7 @@ export const TilesLayer = component$(() => {
         />
       ))}
       <div style="position:absolute;bottom:0;right:0;font:11px sans-serif;background:#fffa;padding:1px 5px">
-        &copy; <a href="https://osm.org/copyright">OpenStreetMap</a>{" "}
-        contributors
+        &copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors
       </div>
     </div>
   );

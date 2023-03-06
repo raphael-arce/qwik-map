@@ -1,3 +1,3 @@
-import { SphericalMercator } from "./SphericalMercator";
+import { SphericalMercator } from './SphericalMercator';
 
 export { SphericalMercator };

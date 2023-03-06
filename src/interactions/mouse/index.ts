@@ -1,12 +1,9 @@
-import { QwikMouseEvent } from "@builder.io/qwik";
-import { MapStore } from "../../store/map";
-import { SphericalMercator } from "../../geo";
-import { getMousePosition } from "../../dom/mouse";
+import { QwikMouseEvent } from '@builder.io/qwik';
+import { MapStore } from '../../store/map';
+import { SphericalMercator } from '../../geo';
+import { getMousePosition } from '../../dom/mouse';
 
-export function onMouseDown(
-  event: QwikMouseEvent<HTMLDivElement>,
-  store: MapStore,
-) {
+export function onMouseDown(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
   if (store.interaction.isPanning || event.button !== 0) {
     return;
   }
@@ -17,10 +14,7 @@ export function onMouseDown(
   store.interaction.panBegin = { x, y };
 }
 
-export function onMouseUp(
-  event: QwikMouseEvent<HTMLDivElement>,
-  store: MapStore,
-) {
+export function onMouseUp(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
   if (!store.interaction.isPanning || event.button !== 0) {
     return;
   }
@@ -42,10 +36,7 @@ export function onMouseUp(
   };
 }
 
-export function onMouseMove(
-  event: QwikMouseEvent<HTMLDivElement>,
-  store: MapStore,
-) {
+export function onMouseMove(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
   if (!store.interaction.isPanning) {
     return;
   }
@@ -60,13 +51,9 @@ export function onMouseMove(
     y: store.pixelOrigin.y + diffY + store.computedHeight / 2,
   };
 
-  const worldSurfaceAtZoomLevel =
-    Math.pow(2, store.zoom) * store.tileProvider.tileSize;
+  const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
-  const newCenterLatLng = SphericalMercator.unproject(
-    newCenterPoint,
-    worldSurfaceAtZoomLevel,
-  );
+  const newCenterLatLng = SphericalMercator.unproject(newCenterPoint, worldSurfaceAtZoomLevel);
 
   store.lat = newCenterLatLng.lat;
   store.lng = newCenterLatLng.lng;

@@ -1,5 +1,5 @@
-import { TileProvider } from "../../models";
-import { Interaction, Point } from "../../models";
+import { TileProvider } from '../../models';
+import { Interaction, Point } from '../../models';
 
 export type MapStore = {
   width: string;

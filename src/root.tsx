@@ -1,5 +1,4 @@
-import { QwikMap } from "./components/QwikMap";
-
+import { QwikMap } from './components/QwikMap';
 
 export default () => {
   return (
