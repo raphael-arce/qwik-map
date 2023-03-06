@@ -9,7 +9,13 @@ export default () => {
         <title>Qwik Map</title>
       </head>
       <body>
-        <QwikMap />
+        <QwikMap
+          width="50vw"
+          height="50vw"
+          zoom={15}
+          lat={52.5250701}
+          lng={13.3977592}
+        />
       </body>
     </>
   );
