@@ -46,6 +46,8 @@ export const QwikMap = component$((props: QwikMap) => {
 
   useTask$(({ track }) => {
     track(() => store.zoom);
+    track(() => store.computedWidth);
+    track(() => store.computedHeight);
     store.pixelOrigin = getPixelOrigin(store);
   });
 

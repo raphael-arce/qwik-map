@@ -56,8 +56,8 @@ export function onMouseMove(
   const diffY = store.interaction.panBegin!.y - y;
 
   const newCenterPoint = {
-    x: store.pixelOrigin.x + diffX + store.width / 2,
-    y: store.pixelOrigin.y + diffY + store.height / 2,
+    x: store.pixelOrigin.x + diffX + store.computedWidth / 2,
+    y: store.pixelOrigin.y + diffY + store.computedHeight / 2,
   };
 
   const worldSurfaceAtZoomLevel =

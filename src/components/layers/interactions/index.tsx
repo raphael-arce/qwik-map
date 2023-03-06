@@ -38,9 +38,8 @@ export const InteractionsLayer = component$(() => {
       onWheel$={onWheelHandler}
       onMouseDown$={onMouseDownHandler}
       document:onMouseUp$={onMouseUpHandler}
-      // onMouseMove$={onMouseMoveHandler}
       document:onMouseMove$={onMouseMoveHandler}
-      style="position: 'absolute'; z-index: 100"
+      style={`width:${store.width};height:${store.height};z-index:100`}
     >
       <Slot />
     </div>

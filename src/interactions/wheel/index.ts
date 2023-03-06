@@ -42,12 +42,10 @@ export function shouldZoomOut(
   return isAllowed && isDebounced;
 }
 
-export function getOffset(
+export function getNewZoomOutCenter(
   event: QwikWheelEvent<HTMLDivElement>,
   store: MapStore,
 ) {
-  const worldSurfaceAtZoomLevel =
-    Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
   const mousePosition = getMousePosition(event);
 
@@ -56,36 +54,71 @@ export function getOffset(
     y: mousePosition.y + store.pixelOrigin.y,
   };
 
-  const mouseGeoCoordinate = SphericalMercator.unproject(
-    mouseWorldPosition,
-    worldSurfaceAtZoomLevel,
-  );
+  const worldSurfaceAtZoomLevel =
+    Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
-  return {
-    lat: mouseGeoCoordinate.lat - store.lat,
-    lng: mouseGeoCoordinate.lng - store.lng,
+  const centerPointCoordinates = SphericalMercator.project({
+    lat: store.lat,
+    lng: store.lng
+  }, worldSurfaceAtZoomLevel);
+
+  const newCenterPointCoordinates = {
+    x: centerPointCoordinates.x - (mouseWorldPosition.x - centerPointCoordinates.x),
+    y: centerPointCoordinates.y - (mouseWorldPosition.y - centerPointCoordinates.y),
   }
+
+  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
+}
+
+export function getNewZoomInCenter(
+  event: QwikWheelEvent<HTMLDivElement>,
+  store: MapStore,
+) {
+
+  const mousePosition = getMousePosition(event);
+
+  const mouseWorldPosition = {
+    x: mousePosition.x + store.pixelOrigin.x,
+    y: mousePosition.y + store.pixelOrigin.y,
+  };
+
+  const worldSurfaceAtZoomLevel =
+    Math.pow(2, store.zoom) * store.tileProvider.tileSize;
+
+  const centerPointCoordinates = {
+    x: store.pixelOrigin.x + store.computedWidth / 2,
+    y: store.pixelOrigin.y + store.computedHeight / 2,
+  }
+
+  const newCenterPointCoordinates = {
+    x: (mouseWorldPosition.x + centerPointCoordinates.x) / 2,
+    y: (mouseWorldPosition.y + centerPointCoordinates.y) / 2,
+  }
+
+  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
 }
 
 export const onWheel = $(
   (event: QwikWheelEvent<HTMLDivElement>, store: MapStore) => {
     if (shouldZoomIn(event, store)) {
-      const offset = getOffset(event, store);
+      const { lat, lng } = getNewZoomInCenter(event, store);
+
+      store.lat = lat;
+      store.lng = lng;
 
       store.zoom = store.zoom + 1;
-      store.lat = store.lat + offset.lat;
-      store.lng = store.lng + offset.lng;
 
       lastCalls.lastZoomIn = Date.now();
       return;
     }
 
     if (shouldZoomOut(event, store)) {
-      const offset = getOffset(event, store);
+      const { lat, lng } = getNewZoomOutCenter(event, store);
+
+      store.lat = lat;
+      store.lng = lng;
 
       store.zoom = store.zoom - 1;
-      store.lat = store.lat - offset.lat;
-      store.lng = store.lng - offset.lng;
 
       lastCalls.lastZoomOut = Date.now();
       return;
