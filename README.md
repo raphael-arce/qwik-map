@@ -1,32 +1,12 @@
-# Qwik Library ⚡️
+# Qwik Map 🗺️️
+
+A simple slippy map implemented with Qwik, making use of Qwik's unique
+resumability approach. The map can also be server-side rendered, if its
+width and height have fixed lengths in pixels. 
 
 - [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik on GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.builder.io/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
 
 ---
-
-## Project Structure
-
-Inside of you project, you'll see the following directories and files:
-
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── index.ts
-```
-
-- `src/components`: Recommended directory for components.
-
-- `index.ts`: This is the entry point of your component library, make sure all the public components are exported from this file.
 
 ## Development
 
