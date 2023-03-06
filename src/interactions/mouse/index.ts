@@ -7,7 +7,7 @@ export function onMouseDown(
   event: QwikMouseEvent<HTMLDivElement>,
   store: MapStore,
 ) {
-  if (store.interaction.isPanning) {
+  if (store.interaction.isPanning || event.button !== 0) {
     return;
   }
 
@@ -21,7 +21,7 @@ export function onMouseUp(
   event: QwikMouseEvent<HTMLDivElement>,
   store: MapStore,
 ) {
-  if (!store.interaction.isPanning) {
+  if (!store.interaction.isPanning || event.button !== 0) {
     return;
   }
 
