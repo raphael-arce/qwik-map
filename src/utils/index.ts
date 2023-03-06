@@ -1,3 +1,3 @@
-import { getPixelOrigin } from "./map";
+import { getPixelOrigin } from './map';
 
 export { getPixelOrigin };

@@ -4,4 +4,4 @@ export type TileProvider = {
   maxZoom: number;
   minZoom: number;
   url: string;
-}
+};

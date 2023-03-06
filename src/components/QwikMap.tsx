@@ -1,14 +1,9 @@
-import {
-  component$,
-  useContextProvider,
-  useStore,
-  useTask$,
-} from "@builder.io/qwik";
-import { MapStore, QwikMapContext } from "../store/map";
-import { TilesLayer } from "./layers/tiles";
-import { InteractionsLayer } from "./layers/interactions";
-import { getPixelOrigin } from "../utils";
-import { parseCssLength } from "../utils/string";
+import { component$, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
+import { MapStore, QwikMapContext } from '../store/map';
+import { TilesLayer } from './layers/tiles';
+import { InteractionsLayer } from './layers/interactions';
+import { getPixelOrigin } from '../utils';
+import { parseCssLength } from '../utils/string';
 
 export type QwikMap = {
   width: string;
@@ -29,10 +24,10 @@ export const QwikMap = component$((props: QwikMap) => {
     pixelOrigin: { x: 0, y: 0 },
     tileProvider: {
       tileSize: 256,
-      name: "OSM",
+      name: 'OSM',
       maxZoom: 19,
       minZoom: 0,
-      url: "https://tile.osm.org/{z}/{x}/{y}.png",
+      url: 'https://tile.osm.org/{z}/{x}/{y}.png',
     },
     interaction: {
       isPanning: false,

@@ -1,4 +1,4 @@
-import { LatLng, Point } from "../models";
+import { LatLng, Point } from '../models';
 
 export const SphericalMercator = {
   MAX_LATITUDE: 85.0511287798,
@@ -27,11 +27,9 @@ export const SphericalMercator = {
 
     return {
       x: worldSurface * (lng / 360 + 0.5),
-      y:
-        (worldSurface * (1 - Math.log(Math.tan(Math.PI * (0.25 + cappedLat / 360))) / Math.PI)) / 2,
+      y: (worldSurface * (1 - Math.log(Math.tan(Math.PI * (0.25 + cappedLat / 360))) / Math.PI)) / 2,
     };
   },
-
 
   /**
    * Converts a point into a geo-coordinate at given world surface

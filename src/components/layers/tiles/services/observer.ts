@@ -1,5 +1,5 @@
-import { MapStore } from "../../../../store/map";
-import { Signal } from "@builder.io/qwik";
+import { MapStore } from '../../../../store/map';
+import { Signal } from '@builder.io/qwik';
 
 export function addSizeObserver(mapRef: Signal<Element | undefined>, store: MapStore) {
   if (!mapRef.value) {

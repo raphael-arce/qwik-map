@@ -1,5 +1,5 @@
-import { QwikMouseEvent } from "@builder.io/qwik";
-import { Point } from "../models";
+import { QwikMouseEvent } from '@builder.io/qwik';
+import { Point } from '../models';
 
 export function getMousePosition(event: QwikMouseEvent<HTMLDivElement>): Point {
   const target = event.target;

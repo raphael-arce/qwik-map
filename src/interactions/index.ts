@@ -1,4 +1,4 @@
-import { onWheel } from "./wheel";
-import { onMouseDown, onMouseUp, onMouseMove } from "./mouse";
+import { onWheel } from './wheel';
+import { onMouseDown, onMouseUp, onMouseMove } from './mouse';
 
-export { onWheel, onMouseDown, onMouseUp, onMouseMove }
+export { onWheel, onMouseDown, onMouseUp, onMouseMove };
