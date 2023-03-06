@@ -8,15 +8,24 @@ import { MapStore, QwikMapContext } from "../store/map";
 import { TilesLayer } from "./layers/tiles";
 import { InteractionsLayer } from "./layers/interactions";
 import { getPixelOrigin } from "../utils";
+import { parseCssLength } from "../utils/string";
 
-export const QwikMap = component$(() => {
+export type QwikMap = {
+  width: string;
+  height: string;
+  zoom: number;
+  lat: number;
+  lng: number;
+};
+export const QwikMap = component$((props: QwikMap) => {
   const initialStore = {
-    width: 800,
-    height: 400,
-    zoom: 15,
-    lat: 52.5250701,
-    lng: 13.3977592,
-    center: { lat: 52.5250701, lng: 13.3977592 },
+    width: props.width,
+    computedWidth: parseCssLength(props.width),
+    height: props.height,
+    computedHeight: parseCssLength(props.height),
+    zoom: props.zoom,
+    lat: props.lat,
+    lng: props.lng,
     pixelOrigin: { x: 0, y: 0 },
     tileProvider: {
       tileSize: 256,
