@@ -12,8 +12,8 @@ export function getPixelOrigin(store: MapStore): Point {
   );
 
   const viewHalf = {
-    x: store.width / 2,
-    y: store.height / 2,
+    x: store.computedWidth / 2,
+    y: store.computedHeight / 2,
   };
 
   return {
