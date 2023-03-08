@@ -8,7 +8,7 @@ export const lastCalls = {
   lastZoomOut: 0,
 };
 
-export const delay = 50;
+export const debounceLimit = 150;
 
 export function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
   const isZoomIn = event.deltaY < 0;
@@ -18,9 +18,34 @@ export function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapSt
   }
 
   const isAllowed = store.zoom < store.tileProvider.maxZoom;
-  const isDebounced = Date.now() > lastCalls.lastZoomIn + delay;
+
+  const timeDelta = Date.now() - lastCalls.lastZoomIn;
+  const isDebounced = timeDelta > debounceLimit;
 
   return isAllowed && isDebounced;
+}
+
+export function getNewZoomInCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
+  const mousePosition = getMousePosition(event);
+
+  const mouseWorldPosition = {
+    x: mousePosition.x + store.pixelOrigin.x,
+    y: mousePosition.y + store.pixelOrigin.y,
+  };
+
+  const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
+
+  const centerPointCoordinates = {
+    x: store.pixelOrigin.x + store.computedWidth / 2,
+    y: store.pixelOrigin.y + store.computedHeight / 2,
+  };
+
+  const newCenterPointCoordinates = {
+    x: (mouseWorldPosition.x + centerPointCoordinates.x) / 2,
+    y: (mouseWorldPosition.y + centerPointCoordinates.y) / 2,
+  };
+
+  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
 }
 
 export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
@@ -31,7 +56,9 @@ export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapS
   }
 
   const isAllowed = store.zoom > store.tileProvider.minZoom;
-  const isDebounced = Date.now() > lastCalls.lastZoomOut + delay;
+
+  const timeDelta = Date.now() - lastCalls.lastZoomOut;
+  const isDebounced = timeDelta > debounceLimit;
 
   return isAllowed && isDebounced;
 }
@@ -57,29 +84,6 @@ export function getNewZoomOutCenter(event: QwikWheelEvent<HTMLDivElement>, store
   const newCenterPointCoordinates = {
     x: centerPointCoordinates.x - (mouseWorldPosition.x - centerPointCoordinates.x),
     y: centerPointCoordinates.y - (mouseWorldPosition.y - centerPointCoordinates.y),
-  };
-
-  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
-}
-
-export function getNewZoomInCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
-  const mousePosition = getMousePosition(event);
-
-  const mouseWorldPosition = {
-    x: mousePosition.x + store.pixelOrigin.x,
-    y: mousePosition.y + store.pixelOrigin.y,
-  };
-
-  const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
-
-  const centerPointCoordinates = {
-    x: store.pixelOrigin.x + store.computedWidth / 2,
-    y: store.pixelOrigin.y + store.computedHeight / 2,
-  };
-
-  const newCenterPointCoordinates = {
-    x: (mouseWorldPosition.x + centerPointCoordinates.x) / 2,
-    y: (mouseWorldPosition.y + centerPointCoordinates.y) / 2,
   };
 
   return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
