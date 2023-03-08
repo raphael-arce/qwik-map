@@ -1,59 +1,44 @@
 import { QwikMouseEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store/map';
-import { SphericalMercator } from '../../geo';
+import { SphericalMercator } from '../../projection';
 import { getMousePosition } from '../../dom/mouse';
+import { add, subtract } from '../../geometry';
 
 export function onMouseDown(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
-  if (store.interaction.isPanning || event.button !== 0) {
+  if (store.interaction.panBegin || event.button !== 0) {
     return;
   }
 
-  const { x, y } = getMousePosition(event);
-
-  store.interaction.isPanning = true;
-  store.interaction.panBegin = { x, y };
+  store.interaction.panBegin = getMousePosition(event);
 }
 
 export function onMouseUp(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
-  if (!store.interaction.isPanning || event.button !== 0) {
+  if (!store.interaction.panBegin || event.button !== 0) {
     return;
   }
 
-  const target = event.target;
+  const panEnd = getMousePosition(event);
 
-  const rect = (target as Element).getBoundingClientRect();
+  const panDifference = subtract(store.interaction.panBegin, panEnd);
 
-  const x = Math.round(event.clientX - rect.left);
-  const y = Math.round(event.clientY - rect.top);
-
-  const diffX = store.interaction.panBegin!.x - x;
-  const diffY = store.interaction.panBegin!.y - y;
-
-  store.interaction.isPanning = false;
-  store.pixelOrigin = {
-    x: store.pixelOrigin.x + diffX,
-    y: store.pixelOrigin.y + diffY,
-  };
+  store.interaction.panBegin = undefined;
+  store.pixelOrigin = add(store.pixelOrigin, panDifference);
 }
 
 export function onMouseMove(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
-  if (!store.interaction.isPanning) {
+  if (!store.interaction.panBegin) {
     return;
   }
 
-  const { x, y } = getMousePosition(event);
+  const currentMousePosition = getMousePosition(event);
 
-  const diffX = store.interaction.panBegin!.x - x;
-  const diffY = store.interaction.panBegin!.y - y;
-
-  const newCenterPoint = {
-    x: store.pixelOrigin.x + diffX + store.computedWidth / 2,
-    y: store.pixelOrigin.y + diffY + store.computedHeight / 2,
-  };
+  const panDifference = subtract(store.interaction.panBegin, currentMousePosition);
+  const newRelativeCenter = add(store.computedCenter, panDifference);
+  const newWorldCenter = add(store.pixelOrigin, newRelativeCenter);
 
   const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
-  const newCenterLatLng = SphericalMercator.unproject(newCenterPoint, worldSurfaceAtZoomLevel);
+  const newCenterLatLng = SphericalMercator.unproject(newWorldCenter, worldSurfaceAtZoomLevel);
 
   store.lat = newCenterLatLng.lat;
   store.lng = newCenterLatLng.lng;
