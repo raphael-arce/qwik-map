@@ -1,6 +1,6 @@
 import { $, QwikWheelEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store/map';
-import { getMousePosition } from '../../dom/mouse';
+import { getMousePosition } from '../../dom';
 import { SphericalMercator } from '../../projection';
 import { add, divideScalar, subtract } from '../../geometry';
 

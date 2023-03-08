@@ -1,4 +1,2 @@
-import { MapStore } from './model';
-import { QwikMapContext } from './context';
-
-export { type MapStore, QwikMapContext };
+export * from './model';
+export * from './context';

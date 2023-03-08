@@ -2,8 +2,7 @@ import { component$, useContextProvider, useStore, useTask$ } from '@builder.io/
 import { MapStore, QwikMapContext } from '../store/map';
 import { TilesLayer } from './layers/tiles';
 import { InteractionsLayer } from './layers/interactions';
-import { getPixelOrigin } from '../utils';
-import { parseCssLength } from '../utils/string';
+import { getPixelOrigin, parseCssLength } from '../utils';
 
 export type QwikMap = {
   width: string;
@@ -12,6 +11,7 @@ export type QwikMap = {
   lat: number;
   lng: number;
 };
+
 export const QwikMap = component$((props: QwikMap) => {
   const initialStore = {
     width: props.width,

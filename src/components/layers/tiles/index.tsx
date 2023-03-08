@@ -1,7 +1,6 @@
 import { component$, useBrowserVisibleTask$, useContext, useSignal } from '@builder.io/qwik';
 import { QwikMapContext, MapStore } from '../../../store/map';
-import { addSizeObserver } from './services/observer';
-import { getTiles } from './services/tile';
+import { addSizeObserver, getTiles } from './services';
 
 export const TilesLayer = component$(() => {
   const store: MapStore = useContext(QwikMapContext);

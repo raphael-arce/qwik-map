@@ -1,3 +1,1 @@
-import { SphericalMercator } from './SphericalMercator';
-
-export { SphericalMercator };
+export * from './SphericalMercator';

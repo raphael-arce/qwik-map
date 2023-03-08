@@ -1,3 +1,2 @@
-import { getPixelOrigin } from './map';
-
-export { getPixelOrigin };
+export * from './map';
+export * from './string';

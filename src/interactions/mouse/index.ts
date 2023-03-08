@@ -1,7 +1,7 @@
 import { QwikMouseEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store/map';
 import { SphericalMercator } from '../../projection';
-import { getMousePosition } from '../../dom/mouse';
+import { getMousePosition } from '../../dom';
 import { add, subtract } from '../../geometry';
 
 export function onMouseDown(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {

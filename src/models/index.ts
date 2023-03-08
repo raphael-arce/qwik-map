@@ -1,6 +1,4 @@
-import { Interaction } from './Interaction';
-import { TileProvider } from './TileProvider';
-import { Point } from './Point';
-import { LatLng } from './LatLng';
-
-export type { Interaction, TileProvider, Point, LatLng };
+export * from './Interaction';
+export * from './TileProvider';
+export * from './Point';
+export * from './LatLng';
