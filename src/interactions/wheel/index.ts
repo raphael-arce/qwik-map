@@ -1,7 +1,8 @@
 import { $, QwikWheelEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store/map';
 import { getMousePosition } from '../../dom/mouse';
-import { SphericalMercator } from '../../geo';
+import { SphericalMercator } from '../../projection';
+import { add, divideScalar, subtract } from '../../geometry';
 
 export const lastCalls = {
   lastZoomIn: 0,
@@ -28,24 +29,13 @@ export function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapSt
 export function getNewZoomInCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
   const mousePosition = getMousePosition(event);
 
-  const mouseWorldPosition = {
-    x: mousePosition.x + store.pixelOrigin.x,
-    y: mousePosition.y + store.pixelOrigin.y,
-  };
+  const mouseWorldPosition = add(store.pixelOrigin, mousePosition);
+  const oldCenter = add(store.pixelOrigin, store.computedCenter);
+  const newCenter = divideScalar(add(mouseWorldPosition, oldCenter), 2);
 
   const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
-  const centerPointCoordinates = {
-    x: store.pixelOrigin.x + store.computedWidth / 2,
-    y: store.pixelOrigin.y + store.computedHeight / 2,
-  };
-
-  const newCenterPointCoordinates = {
-    x: (mouseWorldPosition.x + centerPointCoordinates.x) / 2,
-    y: (mouseWorldPosition.y + centerPointCoordinates.y) / 2,
-  };
-
-  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
+  return SphericalMercator.unproject(newCenter, worldSurfaceAtZoomLevel);
 }
 
 export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
@@ -66,27 +56,13 @@ export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapS
 export function getNewZoomOutCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
   const mousePosition = getMousePosition(event);
 
-  const mouseWorldPosition = {
-    x: mousePosition.x + store.pixelOrigin.x,
-    y: mousePosition.y + store.pixelOrigin.y,
-  };
+  const mouseWorldPosition = add(store.pixelOrigin, mousePosition);
+  const oldCenter = add(store.pixelOrigin, store.computedCenter);
+  const newCenter = subtract(oldCenter, subtract(mouseWorldPosition, oldCenter));
 
   const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
 
-  const centerPointCoordinates = SphericalMercator.project(
-    {
-      lat: store.lat,
-      lng: store.lng,
-    },
-    worldSurfaceAtZoomLevel,
-  );
-
-  const newCenterPointCoordinates = {
-    x: centerPointCoordinates.x - (mouseWorldPosition.x - centerPointCoordinates.x),
-    y: centerPointCoordinates.y - (mouseWorldPosition.y - centerPointCoordinates.y),
-  };
-
-  return SphericalMercator.unproject(newCenterPointCoordinates, worldSurfaceAtZoomLevel);
+  return SphericalMercator.unproject(newCenter, worldSurfaceAtZoomLevel);
 }
 
 export const onWheel = $((event: QwikWheelEvent<HTMLDivElement>, store: MapStore) => {

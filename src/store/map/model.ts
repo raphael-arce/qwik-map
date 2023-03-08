@@ -6,6 +6,7 @@ export type MapStore = {
   computedWidth: number;
   height: string;
   computedHeight: number;
+  computedCenter: Point;
   zoom: number;
   lat: number;
   lng: number;

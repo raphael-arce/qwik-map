@@ -18,6 +18,7 @@ export const QwikMap = component$((props: QwikMap) => {
     computedWidth: parseCssLength(props.width),
     height: props.height,
     computedHeight: parseCssLength(props.height),
+    computedCenter: { x: parseCssLength(props.width) / 2, y: parseCssLength(props.height) / 2 },
     zoom: props.zoom,
     lat: props.lat,
     lng: props.lng,
@@ -30,7 +31,7 @@ export const QwikMap = component$((props: QwikMap) => {
       url: 'https://tile.osm.org/{z}/{x}/{y}.png',
     },
     interaction: {
-      isPanning: false,
+      panBegin: undefined,
     },
   };
 
