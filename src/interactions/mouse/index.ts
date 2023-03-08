@@ -12,19 +12,6 @@ export function onMouseDown(event: QwikMouseEvent<HTMLDivElement>, store: MapSto
   store.interaction.panBegin = getMousePosition(event);
 }
 
-export function onMouseUp(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
-  if (!store.interaction.panBegin || event.button !== 0) {
-    return;
-  }
-
-  const panEnd = getMousePosition(event);
-
-  const panDifference = subtract(store.interaction.panBegin, panEnd);
-
-  store.interaction.panBegin = undefined;
-  store.pixelOrigin = add(store.pixelOrigin, panDifference);
-}
-
 export function onMouseMove(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
   if (!store.interaction.panBegin) {
     return;
@@ -42,4 +29,17 @@ export function onMouseMove(event: QwikMouseEvent<HTMLDivElement>, store: MapSto
 
   store.lat = newCenterLatLng.lat;
   store.lng = newCenterLatLng.lng;
+}
+
+export function onMouseUp(event: QwikMouseEvent<HTMLDivElement>, store: MapStore) {
+  if (!store.interaction.panBegin || event.button !== 0) {
+    return;
+  }
+
+  const panEnd = getMousePosition(event);
+
+  const panDifference = subtract(store.interaction.panBegin, panEnd);
+
+  store.interaction.panBegin = undefined;
+  store.pixelOrigin = add(store.pixelOrigin, panDifference);
 }

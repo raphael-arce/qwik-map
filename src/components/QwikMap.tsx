@@ -4,7 +4,7 @@ import { TilesLayer } from './layers/tiles';
 import { InteractionsLayer } from './layers/interactions';
 import { getPixelOrigin, parseCssLength } from '../utils';
 
-export type QwikMap = {
+export type QwikMapProps = {
   width: string;
   height: string;
   zoom: number;
@@ -12,7 +12,7 @@ export type QwikMap = {
   lng: number;
 };
 
-export const QwikMap = component$((props: QwikMap) => {
+export const QwikMap = component$((props: QwikMapProps) => {
   const initialStore = {
     width: props.width,
     computedWidth: parseCssLength(props.width),
