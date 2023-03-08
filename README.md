@@ -2,7 +2,7 @@
 
 A simple slippy map implemented with Qwik, making use of Qwik's unique
 resumability approach. The map can also be server-side rendered, if its
-width and height have fixed lengths in pixels. 
+width and height have fixed lengths in pixels.
 
 - [Qwik Docs](https://qwik.builder.io/)
 
