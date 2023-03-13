@@ -1,4 +1,4 @@
-import { QwikTouchEvent } from "@builder.io/qwik";
+import { QwikTouchEvent } from '@builder.io/qwik';
 import { Point } from '../models';
 
 export function getTouchPosition(event: QwikTouchEvent<HTMLDivElement>): Point {

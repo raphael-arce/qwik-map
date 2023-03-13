@@ -17,7 +17,8 @@
   },
   "files": [
     "lib",
-    "lib-types"
+    "lib-types",
+    "src"
   ],
   "engines": {
     "node": ">=18",

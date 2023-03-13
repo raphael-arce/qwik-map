@@ -1,8 +1,8 @@
 import { QwikTouchEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store/map';
-import { getTouchPosition } from "../../dom";
-import { add, subtract } from "../../geometry";
-import { SphericalMercator } from "../../projection";
+import { getTouchPosition } from '../../dom';
+import { add, subtract } from '../../geometry';
+import { SphericalMercator } from '../../projection';
 
 export function onTouchStart(event: QwikTouchEvent<HTMLDivElement>, store: MapStore) {
   if (store.interaction.panBegin) {
