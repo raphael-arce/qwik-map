@@ -40,6 +40,7 @@
     "lint:fix": "npm run prettier:fix && npm run eslint:fix",
     "release": "np",
     "start": "vite --open --mode ssr",
+    "test": "echo \"NO TESTS YET\"",
     "qwik": "qwik"
   },
   "devDependencies": {
