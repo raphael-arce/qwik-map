@@ -2,7 +2,7 @@ import { component$, useBrowserVisibleTask$, useContext, useSignal } from '@buil
 import { QwikMapContext, MapStore } from '../../../store/map';
 import { addSizeObserver, getTiles } from './services';
 
-export const TilesLayer = component$(() => {
+const TilesLayer = component$(() => {
   const store: MapStore = useContext(QwikMapContext);
 
   const mapRef = useSignal<Element>();
@@ -33,3 +33,5 @@ export const TilesLayer = component$(() => {
     </div>
   );
 });
+
+export { TilesLayer, addSizeObserver, getTiles };

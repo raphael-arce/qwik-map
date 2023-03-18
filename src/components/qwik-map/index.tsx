@@ -1,8 +1,8 @@
 import { component$, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
-import { MapStore, QwikMapContext } from '../store/map';
-import { TilesLayer } from './layers/tiles';
-import { InteractionsLayer } from './layers/interactions';
-import { getPixelOrigin, parseCssLength } from '../utils';
+import { MapStore, QwikMapContext } from '../../store/map';
+import { TilesLayer } from '../layers';
+import { InteractionsLayer } from '../layers';
+import { getPixelOrigin, parseCssLength } from '../../utils';
 
 export type QwikMapProps = {
   width: string;
