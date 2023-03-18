@@ -1,6 +1,6 @@
 {
   "name": "qwik-map",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A slippy map implemented in qwik.",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
