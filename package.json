@@ -4,7 +4,7 @@
   "description": "A slippy map implemented in qwik.",
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
-  "types": "./lib-types/index.d.ts",
+  "types": "./lib-types/src/index.d.ts",
   "author": {
     "name": "Raphael Arce"
   },
@@ -12,7 +12,7 @@
     ".": {
       "import": "./lib/index.qwik.mjs",
       "require": "./lib/index.qwik.cjs",
-      "types": "./lib-types/index.d.ts"
+      "types": "./lib-types/src/index.d.ts"
     }
   },
   "files": [
