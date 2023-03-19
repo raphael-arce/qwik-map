@@ -17,5 +17,5 @@
     "isolatedModules": true,
     "types": ["vite/client"]
   },
-  "include": ["src", ".eslintrc.cjs"]
+  "include": ["src", ".eslintrc.cjs", "index.ts"]
 }
