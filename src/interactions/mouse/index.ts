@@ -1,5 +1,5 @@
 import { QwikMouseEvent } from '@builder.io/qwik';
-import { MapStore } from '../../store/map';
+import { MapStore } from '../../store';
 import { SphericalMercator } from '../../projection';
 import { getMousePosition } from '../../dom';
 import { add, subtract } from '../../geometry';

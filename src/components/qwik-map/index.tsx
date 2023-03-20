@@ -1,4 +1,4 @@
-import { component$, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
+import { component$, Slot, useContextProvider, useStore, useTask$ } from "@builder.io/qwik";
 import { MapStore, QwikMapContext } from '../../store/map';
 import { TilesLayer } from '../layers';
 import { InteractionsLayer } from '../layers';
@@ -52,7 +52,9 @@ export const QwikMap = component$((props: QwikMapProps) => {
   return (
     <>
       <InteractionsLayer>
-        <TilesLayer />
+        <TilesLayer>
+          <Slot />
+        </TilesLayer>
       </InteractionsLayer>
     </>
   );
