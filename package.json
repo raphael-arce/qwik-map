@@ -31,6 +31,7 @@
     "build.lib": "vite build --mode lib",
     "build.types": "tsc --emitDeclarationOnly",
     "dev": "vite --mode ssr",
+    "dev:host": "npm run dev -- --host",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "eslint": "eslint \"src/**/*.ts*\" --max-warnings 0 .",
     "eslint:fix": "eslint --ext .ts,.cjs,.tsx --max-warnings 0 --fix .",
