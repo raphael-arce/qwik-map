@@ -1,4 +1,4 @@
-import { MapStore } from '../store/map';
+import { MapStore } from '../store';
 import { Point } from '../models';
 import { SphericalMercator } from '../projection';
 import { subtract, round } from '../geometry';

@@ -1,8 +1,9 @@
-import { component$, Slot, useContextProvider, useStore, useTask$ } from "@builder.io/qwik";
+import { component$, Slot, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
 import { MapStore, QwikMapContext } from '../../store/map';
 import { TilesLayer } from '../layers';
 import { InteractionsLayer } from '../layers';
 import { getPixelOrigin, parseCssLength } from '../../utils';
+import { Marker } from '../layers/markers';
 
 export type QwikMapProps = {
   width: string;
