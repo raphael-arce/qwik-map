@@ -31,7 +31,7 @@ export const Marker = component$((props: MarkerProps) => {
         width: '10px',
         height: '10px',
         borderRadius: '50%',
-        position: 'relative',
+        position: 'absolute',
         left: `${position.x}px`,
         top: `${position.y}px`,
       }}
