@@ -1,5 +1,5 @@
-import { component$, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
-import { MapStore, QwikMapContext } from '../../store/map';
+import { component$, Slot, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
+import { MapStore, QwikMapContext } from '../../store';
 import { TilesLayer } from '../layers';
 import { InteractionsLayer } from '../layers';
 import { getPixelOrigin, parseCssLength } from '../../utils';
@@ -52,7 +52,9 @@ export const QwikMap = component$((props: QwikMapProps) => {
   return (
     <>
       <InteractionsLayer>
-        <TilesLayer />
+        <TilesLayer>
+          <Slot />
+        </TilesLayer>
       </InteractionsLayer>
     </>
   );
