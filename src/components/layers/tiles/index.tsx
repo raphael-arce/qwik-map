@@ -1,4 +1,4 @@
-import { component$, Slot, useContext, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, Slot, useContext, useSignal, useVisibleTask$ } from '@builder.io/qwik';
 import { QwikMapContext, MapStore } from '../../../store';
 import { addSizeObserver, getTiles } from './services';
 

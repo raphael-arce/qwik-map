@@ -1,5 +1,5 @@
 import { component$, Slot, useContextProvider, useStore, useTask$ } from '@builder.io/qwik';
-import { MapStore, QwikMapContext } from "../../store";
+import { MapStore, QwikMapContext } from '../../store';
 import { TilesLayer } from '../layers';
 import { InteractionsLayer } from '../layers';
 import { getPixelOrigin, parseCssLength } from '../../utils';

@@ -16,25 +16,11 @@ export function getMarkerPosition(store: MapStore, props: MarkerProps) {
     SphericalMercator.project({ lat: props.lat, lng: props.lng }, worldSurfaceAtZoomLevel),
   );
 
-  // const pixelOrigin = store.pixelOrigin; // @todo: this looks like a bug. need to investigate.
-
   return subtract(projectedPosition, getPixelOrigin(store));
 }
 
 export const Marker = component$((props: MarkerProps) => {
   const store: MapStore = useContext(QwikMapContext);
-
-  // const markerStore = useStore({ position: { x: 0, y: 0 } });
-  //
-  // useTask$(({ track }) => {
-  //   track(() => store.lat);
-  //   track(() => store.lng);
-  //   track(() => store.zoom);
-  //   track(() => store.computedWidth)
-  //   track(() => store.computedHeight)
-  //   // console.log('computedCenter changed')
-  //   markerStore.position = getMarkerPosition(store, props);
-  // });
 
   const position = getMarkerPosition(store, props);
 

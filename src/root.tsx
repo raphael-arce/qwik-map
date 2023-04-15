@@ -1,5 +1,5 @@
 import { QwikMap } from './';
-import { Marker } from "./components/layers/markers";
+import { Marker } from './components/layers/markers';
 
 export default () => {
   return (
