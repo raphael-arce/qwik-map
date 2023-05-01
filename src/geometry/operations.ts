@@ -27,3 +27,14 @@ export function divideScalar(point: Point, scalar: number): Point {
     y: point.y / scalar,
   };
 }
+
+export function distance(p1: Point, p2: Point): number {
+  const a = p1.x - p2.x;
+  const b = p1.y - p2.y;
+
+  return Math.sqrt(a * a + b * b);
+}
+
+export function midpoint(p1: Point, p2: Point): Point {
+  return divideScalar(add(p1, p2), 2);
+}

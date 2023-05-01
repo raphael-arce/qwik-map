@@ -22,6 +22,8 @@ const TilesLayer = component$(() => {
         <img
           src={tileUrl}
           key={tileUrl}
+          width={store.tileProvider.tileSize}
+          height={store.tileProvider.tileSize}
           style={tileStyle}
           draggable={false}
           alt="tile displaying a part of a map"
