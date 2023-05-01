@@ -1,8 +1,8 @@
-import { $, QwikWheelEvent } from '@builder.io/qwik';
-import { MapStore } from '../../store/map';
+import { QwikWheelEvent } from '@builder.io/qwik';
+import { MapStore } from '../../store';
 import { getMousePosition } from '../../dom';
-import { SphericalMercator } from '../../projection';
-import { add, divideScalar, subtract } from '../../geometry';
+import { getNewZoomInCenter, getNewZoomOutCenter } from '../../utils/zoom';
+import { LatLng } from '../../models';
 
 export const lastCalls = {
   lastZoomIn: 0,
@@ -11,63 +11,67 @@ export const lastCalls = {
 
 export const debounceLimit = 150;
 
-export function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
+function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
+  const isAllowed = store.zoom < store.tileProvider.maxZoom;
+
+  if (!isAllowed) {
+    return false;
+  }
+
+  const timeDelta = Date.now() - lastCalls.lastZoomIn;
+  const isDebounced = timeDelta > debounceLimit;
+
+  if (!isDebounced) {
+    return false;
+  }
+
   const isZoomIn = event.deltaY < 0;
 
   if (!isZoomIn) {
     return false;
   }
 
-  const isAllowed = store.zoom < store.tileProvider.maxZoom;
+  return true;
+}
+
+function getNewWheelZoomInCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): LatLng {
+  const mousePosition = getMousePosition(event);
+
+  return getNewZoomInCenter(mousePosition, store);
+}
+
+export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
+  const isAllowed = store.zoom > store.tileProvider.minZoom;
+
+  if (!isAllowed) {
+    return false;
+  }
 
   const timeDelta = Date.now() - lastCalls.lastZoomIn;
   const isDebounced = timeDelta > debounceLimit;
 
-  return isAllowed && isDebounced;
-}
+  if (!isDebounced) {
+    return false;
+  }
 
-export function getNewZoomInCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
-  const mousePosition = getMousePosition(event);
-
-  const mouseWorldPosition = add(store.pixelOrigin, mousePosition);
-  const oldCenter = add(store.pixelOrigin, store.computedCenter);
-  const newCenter = divideScalar(add(mouseWorldPosition, oldCenter), 2);
-
-  const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
-
-  return SphericalMercator.unproject(newCenter, worldSurfaceAtZoomLevel);
-}
-
-export function shouldZoomOut(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
   const isZoomOut = event.deltaY > 0;
 
   if (!isZoomOut) {
     return false;
   }
 
-  const isAllowed = store.zoom > store.tileProvider.minZoom;
-
-  const timeDelta = Date.now() - lastCalls.lastZoomOut;
-  const isDebounced = timeDelta > debounceLimit;
-
-  return isAllowed && isDebounced;
+  return true;
 }
 
-export function getNewZoomOutCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
+function getNewWheelZoomOutCenter(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): LatLng {
   const mousePosition = getMousePosition(event);
 
-  const mouseWorldPosition = add(store.pixelOrigin, mousePosition);
-  const oldCenter = add(store.pixelOrigin, store.computedCenter);
-  const newCenter = subtract(oldCenter, subtract(mouseWorldPosition, oldCenter));
-
-  const worldSurfaceAtZoomLevel = Math.pow(2, store.zoom) * store.tileProvider.tileSize;
-
-  return SphericalMercator.unproject(newCenter, worldSurfaceAtZoomLevel);
+  return getNewZoomOutCenter(mousePosition, store);
 }
 
-export const onWheel = $((event: QwikWheelEvent<HTMLDivElement>, store: MapStore) => {
+export function onWheel(event: QwikWheelEvent<HTMLDivElement>, store: MapStore) {
   if (shouldZoomIn(event, store)) {
-    const { lat, lng } = getNewZoomInCenter(event, store);
+    const { lat, lng } = getNewWheelZoomInCenter(event, store);
 
     store.lat = lat;
     store.lng = lng;
@@ -79,7 +83,7 @@ export const onWheel = $((event: QwikWheelEvent<HTMLDivElement>, store: MapStore
   }
 
   if (shouldZoomOut(event, store)) {
-    const { lat, lng } = getNewZoomOutCenter(event, store);
+    const { lat, lng } = getNewWheelZoomOutCenter(event, store);
 
     store.lat = lat;
     store.lng = lng;
@@ -89,4 +93,4 @@ export const onWheel = $((event: QwikWheelEvent<HTMLDivElement>, store: MapStore
     lastCalls.lastZoomOut = Date.now();
     return;
   }
-});
+}
