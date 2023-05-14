@@ -1,7 +1,6 @@
-body {
-  margin: 0px;
-  padding: 0px;
-  touch-action: pan-y pan-x;
+html {
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body {
