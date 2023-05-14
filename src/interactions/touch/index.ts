@@ -7,6 +7,11 @@ import { Point } from '../../models';
 import { getNewMapCenter, getNewZoomInCenter, getNewZoomOutCenter } from '../../utils';
 
 const touches: Touch[] = [];
+const lastCalls = {
+  lastZoomIn: 0,
+  lastZoomOut: 0,
+};
+const debounceLimit = 250;
 
 function handleTouchPan(event: QwikTouchEvent<HTMLDivElement>, store: MapStore) {
   const previousTouchPosition = getTouchPosition(touches[0]);
@@ -34,16 +39,8 @@ function getNewPinchZoomOutCenter(p0: Point, p1: Point, store: MapStore) {
   return getNewZoomOutCenter(pinchMidpoint, store);
 }
 
-function shouldZoomIn({
-  currentDistance,
-  previousDistance,
-  store,
-}: {
-  currentDistance: number;
-  previousDistance: number;
-  store: MapStore;
-}): boolean {
-  const isZoomIn = currentDistance > previousDistance;
+function shouldZoomIn(currentDistance: number, previousDistance: number, store: MapStore): boolean {
+  const isZoomIn = currentDistance < previousDistance;
 
   if (!isZoomIn) {
     return false;
@@ -55,25 +52,31 @@ function shouldZoomIn({
     return false;
   }
 
+  const timeDelta = Date.now() - lastCalls.lastZoomIn;
+  const isDebounced = timeDelta > debounceLimit;
+
+  if (!isDebounced) {
+    return false;
+  }
+
   return true;
 }
 
-function shouldZoomOut({
-  currentDistance,
-  previousDistance,
-  store,
-}: {
-  currentDistance: number;
-  previousDistance: number;
-  store: MapStore;
-}): boolean {
-  const isZoomOut = currentDistance < previousDistance;
+function shouldZoomOut(currentDistance: number, previousDistance: number, store: MapStore): boolean {
+  const isZoomOut = currentDistance > previousDistance;
 
   if (!isZoomOut) {
     return false;
   }
 
   const isAllowed = store.zoom > store.tileProvider.minZoom;
+
+  const timeDelta = Date.now() - lastCalls.lastZoomIn;
+  const isDebounced = timeDelta > debounceLimit;
+
+  if (!isDebounced) {
+    return false;
+  }
 
   if (!isAllowed) {
     return false;
@@ -103,7 +106,7 @@ function handlePinchZoom(event: QwikTouchEvent<HTMLDivElement>, store: MapStore)
     return;
   }
 
-  if (shouldZoomIn({ previousDistance, currentDistance, store })) {
+  if (shouldZoomIn(previousDistance, currentDistance, store)) {
     const { lat, lng } = getNewPinchZoomInCenter(currentTouchPosition0, currentTouchPosition1, store);
 
     store.lat = lat;
@@ -111,16 +114,24 @@ function handlePinchZoom(event: QwikTouchEvent<HTMLDivElement>, store: MapStore)
 
     store.zoom += 1;
 
+    for (let i = 0; i < touches.length; i++) {
+      touches.splice(i, 1, event.targetTouches[i]);
+    }
+
     return;
   }
 
-  if (shouldZoomOut({ previousDistance, currentDistance, store })) {
+  if (shouldZoomOut(previousDistance, currentDistance, store)) {
     const { lat, lng } = getNewPinchZoomOutCenter(currentTouchPosition0, currentTouchPosition1, store);
 
     store.lat = lat;
     store.lng = lng;
 
     store.zoom -= 1;
+
+    for (let i = 0; i < touches.length; i++) {
+      touches.splice(i, 1, event.targetTouches[i]);
+    }
 
     return;
   }
@@ -139,10 +150,6 @@ export function onTouchMove(event: QwikTouchEvent<HTMLDivElement>, store: MapSto
 
   if (touches.length === 2) {
     handlePinchZoom(event, store);
-
-    for (let i = 0; i < touches.length; i++) {
-      touches.splice(i, 1, event.targetTouches[i]);
-    }
 
     return;
   }
