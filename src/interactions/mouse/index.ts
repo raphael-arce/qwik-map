@@ -2,9 +2,8 @@ import { QwikMouseEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store';
 import { getMousePosition } from '../../dom';
 import { add, subtract } from '../../geometry';
-import { getNewZoomInCenter } from '../../utils/zoom';
+import { getNewZoomInCenter, getNewMapCenter } from '../../utils';
 import { Point } from '../../models';
-import { getNewMapCenter } from '../../utils/pan';
 
 let panBegin: Point | undefined = undefined;
 

@@ -1,5 +1,5 @@
 import { $, component$, QwikMouseEvent, QwikTouchEvent, QwikWheelEvent, Slot, useContext } from '@builder.io/qwik';
-import { MapStore, QwikMapContext } from '../../../store/map';
+import { MapStore, QwikMapContext } from '../../../store';
 import { onWheel, onMouseDown, onMouseUp, onMouseMove, onDoubleClick } from '../../../interactions';
 import { onTouchEnd, onTouchMove, onTouchStart } from '../../../interactions';
 

@@ -1,7 +1,7 @@
 import { QwikWheelEvent } from '@builder.io/qwik';
 import { MapStore } from '../../store';
 import { getMousePosition } from '../../dom';
-import { getNewZoomInCenter, getNewZoomOutCenter } from '../../utils/zoom';
+import { getNewZoomInCenter, getNewZoomOutCenter } from '../../utils';
 import { LatLng } from '../../models';
 
 export const lastCalls = {

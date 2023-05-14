@@ -4,8 +4,7 @@ import { getTouchPosition } from '../../dom';
 import { add, subtract } from '../../geometry';
 import { distance, midpoint } from '../../geometry/operations';
 import { Point } from '../../models';
-import { getNewMapCenter } from '../../utils/pan';
-import { getNewZoomInCenter, getNewZoomOutCenter } from '../../utils/zoom';
+import { getNewMapCenter, getNewZoomInCenter, getNewZoomOutCenter } from '../../utils';
 
 const touches: Touch[] = [];
 
