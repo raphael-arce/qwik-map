@@ -5,7 +5,7 @@ body {
 }
 
 body {
-    margin: 0px;
-    padding: 0px;
-    touch-action: pan-y pan-x;
+  margin: 0px;
+  padding: 0px;
+  touch-action: pan-y pan-x;
 }
