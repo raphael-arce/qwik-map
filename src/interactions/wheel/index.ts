@@ -4,12 +4,12 @@ import { getMousePosition } from '../../dom';
 import { getNewZoomInCenter, getNewZoomOutCenter } from '../../utils';
 import { LatLng } from '../../models';
 
-export const lastCalls = {
+const lastCalls = {
   lastZoomIn: 0,
   lastZoomOut: 0,
 };
 
-export const debounceLimit = 150;
+const debounceLimit = 150;
 
 function shouldZoomIn(event: QwikWheelEvent<HTMLDivElement>, store: MapStore): boolean {
   const isAllowed = store.zoom < store.tileProvider.maxZoom;
